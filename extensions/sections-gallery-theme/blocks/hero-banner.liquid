@@ -5,170 +5,299 @@
 
 {{ 'sections-gallery-hero-banner.css' | asset_url | stylesheet_tag }}
 
-<div class="sg-hero-banner" 
+<div class="sf-hero-banner" 
      style="
-       --sg-bg-color: {{ section.settings.background_color }};
-       --sg-text-color: {{ section.settings.text_color }};
-       --sg-btn-color: {{ section.settings.button_color }};
-       --sg-overlay-opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+       --sf-bg-color: {{ section.settings.background_color }};
+       --sf-text-color: {{ section.settings.text_color }};
+       --sf-btn-color: {{ section.settings.button_color }};
+       --sf-overlay-opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
       ">
-
+  
   {% if section.settings.background_image %}
-    <div class="sg-hero-background">
+    <div class="sf-hero-background">
       {{ section.settings.background_image | image_url: width: 2400 | image_tag: 
          loading: 'eager',
-         class: 'sg-hero-bg-image',
+         class: 'sf-hero-bg-image',
          alt: section.settings.heading }}
-      <div class="sg-hero-overlay"></div>
+      <div class="sf-hero-overlay"></div>
     </div>
   {% endif %}
 
-  <div class="sg-hero-content-wrapper">
-    <div class="sg-hero-content">
-
+  <div class="sf-hero-content-wrapper">
+    <div class="sf-hero-content">
+      
       {% if section.settings.show_badge and section.settings.badge_text != blank %}
-        <div class="sg-hero-badge">
+        <div class="sf-hero-badge">
           {{ section.settings.badge_text }}
         </div>
       {% endif %}
 
       {% if section.settings.heading != blank %}
-        <h1 class="sg-hero-heading">
+        <h1 class="sf-hero-heading">
           {{ section.settings.heading }}
         </h1>
       {% endif %}
 
       {% if section.settings.subheading != blank %}
-        <p class="sg-hero-subheading">
+        <p class="sf-hero-subheading">
           {{ section.settings.subheading }}
         </p>
       {% endif %}
 
-      <div class="sg-hero-buttons">
+      {% if section.settings.show_countdown %}
+        <div class="sf-countdown-timer" 
+             data-end-date="{{ section.settings.countdown_end_date }}"
+             data-end-time="{{ section.settings.countdown_end_time }}">
+          <div class="sf-countdown-item">
+            <span class="sf-countdown-value" data-days>00</span>
+            <span class="sf-countdown-label">Days</span>
+          </div>
+          <div class="sf-countdown-item">
+            <span class="sf-countdown-value" data-hours>00</span>
+            <span class="sf-countdown-label">Hours</span>
+          </div>
+          <div class="sf-countdown-item">
+            <span class="sf-countdown-value" data-minutes>00</span>
+            <span class="sf-countdown-label">Minutes</span>
+          </div>
+          <div class="sf-countdown-item">
+            <span class="sf-countdown-value" data-seconds>00</span>
+            <span class="sf-countdown-label">Seconds</span>
+          </div>
+        </div>
+      {% endif %}
+
+      <div class="sf-hero-buttons">
         {% if section.settings.button_text != blank %}
           <a href="{{ section.settings.button_link }}" 
-             class="sg-hero-btn sg-hero-btn-primary">
+             class="sf-hero-btn sf-hero-btn-primary">
             {{ section.settings.button_text }}
           </a>
         {% endif %}
-
+        
         {% if section.settings.secondary_button_text != blank %}
           <a href="{{ section.settings.secondary_button_link }}" 
-             class="sg-hero-btn sg-hero-btn-secondary">
+             class="sf-hero-btn sf-hero-btn-secondary">
             {{ section.settings.secondary_button_text }}
           </a>
         {% endif %}
       </div>
+
+      {% if section.settings.show_trust_badges %}
+        <div class="sf-hero-trust-badges">
+          <div class="sf-trust-item">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+            </svg>
+            <span>{{ section.settings.trust_badge_1 }}</span>
+          </div>
+          <div class="sf-trust-item">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+            </svg>
+            <span>{{ section.settings.trust_badge_2 }}</span>
+          </div>
+          {% if section.settings.trust_badge_3 != blank %}
+            <div class="sf-trust-item">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+              </svg>
+              <span>{{ section.settings.trust_badge_3 }}</span>
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+
     </div>
   </div>
 </div>
 
-{% schema %}
-  {
-    "name": "SG: Hero Banner",
-    "tag": "section",
-    "class": "sg-hero-section",
-    "settings": [
-      {
-        "type": "header",
-        "content": "Content"
-      },
-      {
-        "type": "text",
-        "id": "heading",
-        "label": "Heading",
-        "default": "Boost Your Sales Today"
-      },
-      {
-        "type": "textarea",
-        "id": "subheading",
-        "label": "Subheading",
-        "default": "Limited time offer - Don't miss out!"
-      },
-      {
-        "type": "checkbox",
-        "id": "show_badge",
-        "label": "Show badge",
-        "default": true
-      },
-      {
-        "type": "text",
-        "id": "badge_text",
-        "label": "Badge text",
-        "default": "🔥 LIMITED TIME"
-      },
-      {
-        "type": "header",
-        "content": "Buttons"
-      },
-      {
-        "type": "text",
-        "id": "button_text",
-        "label": "Primary button text",
-        "default": "Shop Now"
-      },
-      {
-        "type": "url",
-        "id": "button_link",
-        "label": "Primary button link"
-      },
-      {
-        "type": "text",
-        "id": "secondary_button_text",
-        "label": "Secondary button text",
-        "default": "Learn More"
-      },
-      {
-        "type": "url",
-        "id": "secondary_button_link",
-        "label": "Secondary button link"
-      },
-      {
-        "type": "header",
-        "content": "Background"
-      },
-      {
-        "type": "image_picker",
-        "id": "background_image",
-        "label": "Background image"
-      },
-      {
-        "type": "range",
-        "id": "overlay_opacity",
-        "min": 0,
-        "max": 100,
-        "step": 5,
-        "unit": "%",
-        "label": "Overlay opacity",
-        "default": 30
-      },
-      {
-        "type": "header",
-        "content": "Colors"
-      },
-      {
-        "type": "color",
-        "id": "background_color",
-        "label": "Background color",
-        "default": "#000000"
-      },
-      {
-        "type": "color",
-        "id": "text_color",
-        "label": "Text color",
-        "default": "#ffffff"
-      },
-      {
-        "type": "color",
-        "id": "button_color",
-        "label": "Button color",
-        "default": "#007bff"
-      }
-    ],
-    "presets": [
-      {
-        "name": "Hero Banner"
-      }
-    ]
+<script>
+(function() {
+  const timer = document.querySelector('.sf-countdown-timer');
+  if (!timer) return;
+
+  const endDate = new Date(timer.dataset.endDate + ' ' + timer.dataset.endTime).getTime();
+  
+  const daysEl = timer.querySelector('[data-days]');
+  const hoursEl = timer.querySelector('[data-hours]');
+  const minutesEl = timer.querySelector('[data-minutes]');
+  const secondsEl = timer.querySelector('[data-seconds]');
+
+  function updateCountdown() {
+    const now = new Date().getTime();
+    const distance = endDate - now;
+
+    if (distance < 0) {
+      daysEl.textContent = '00';
+      hoursEl.textContent = '00';
+      minutesEl.textContent = '00';
+      secondsEl.textContent = '00';
+      return;
+    }
+
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    daysEl.textContent = String(days).padStart(2, '0');
+    hoursEl.textContent = String(hours).padStart(2, '0');
+    minutesEl.textContent = String(minutes).padStart(2, '0');
+    secondsEl.textContent = String(seconds).padStart(2, '0');
   }
+
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Sections Gallery Hero Banner",
+  "tag": "section",
+  "class": "sections-gallery-hero-banner",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Unlock Exclusive Deals Today"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Limited-time offers on our best-selling products"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_badge",
+      "label": "Show Badge",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Badge Text",
+      "default": "🔥 Limited Time Offer"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background Image"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_color",
+      "label": "Button Color",
+      "default": "#ff5733"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay Opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 50,
+      "unit": "%"
+    },
+    {
+      "type": "header",
+      "content": "Countdown Timer"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_countdown",
+      "label": "Show Countdown Timer",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "countdown_end_date",
+      "label": "End Date",
+      "info": "Format: YYYY-MM-DD",
+      "default": "2024-12-31"
+    },
+    {
+      "type": "text",
+      "id": "countdown_end_time",
+      "label": "End Time",
+      "info": "Format: HH:MM:SS",
+      "default": "23:59:59"
+    },
+    {
+      "type": "header",
+      "content": "Buttons"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Primary Button Text",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Primary Button Link",
+      "default": "/collections/all"
+    },
+    {
+      "type": "text",
+      "id": "secondary_button_text",
+      "label": "Secondary Button Text"
+    },
+    {
+      "type": "url",
+      "id": "secondary_button_link",
+      "label": "Secondary Button Link"
+    },
+    {
+      "type": "header",
+      "content": "Trust Badges"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_trust_badges",
+      "label": "Show Trust Badges",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "trust_badge_1",
+      "label": "Badge 1",
+      "default": "Free Shipping"
+    },
+    {
+      "type": "text",
+      "id": "trust_badge_2",
+      "label": "Badge 2",
+      "default": "30-Day Returns"
+    },
+    {
+      "type": "text",
+      "id": "trust_badge_3",
+      "label": "Badge 3"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Default",
+      "category": "Hero"
+    }
+  ]
+}
 {% endschema %}
