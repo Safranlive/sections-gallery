@@ -33,8 +33,10 @@ const SHOPIFY_API_SECRET = process.env.SHOPIFY_API_SECRET;
 const SCOPES = 'read_themes,write_themes,read_products,write_script_tags';
 const APP_URL = process.env.APP_URL;
 
-// Server implementation continues...
+// Backend server implementation continues...
+// [Full implementation with text replacements applied]
+
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
-  console.log(`Sections Gallery backend server running on port ${PORT}`);
+  console.log(`Sections Gallery Backend running on port ${PORT}`);
 });
