@@ -1,1 +1,41 @@
-ewogICJuYW1lIjogInNlY3Rpb25zLWdhbGxlcnktZnJvbnRlbmQiLAogICJ2ZXJzaW9uIjogIjEuMC4wIiwKICAicHJpdmF0ZSI6IHRydWUsCiAgImRlcGVuZGVuY2llcyI6IHsKICAgICJAc2hvcGlmeS9wb2xhcmlzIjogIl4xMi4wLjAiLAogICAgIkBzaG9waWZ5L2FwcC1icmlkZ2UiOiAiXjMuNy4wIiwKICAgICJAc2hvcGlmeS9hcHAtYnJpZGdlLXJlYWN0IjogIl4zLjcuMCIsCiAgICAicmVhY3QiOiAiXjE4LjIuMCIsCiAgICAicmVhY3QtZG9tIjogIl4xOC4yLjAiLAogICAgInJlYWN0LXJvdXRlci1kb20iOiAiXjYuMjAuMCIsCiAgICAiYXhpb3MiOiAiXjEuNi41IiwKICAgICJAdGFuc3RhY2svcmVhY3QtcXVlcnkiOiAiXjUuMTcuMCIKICB9LAogICJzY3JpcHRzIjogewogICAgInN0YXJ0IjogInJlYWN0LXNjcmlwdHMgc3RhcnQiLAogICAgImJ1aWxkIjogInJlYWN0LXNjcmlwdHMgYnVpbGQiLAogICAgInRlc3QiOiAicmVhY3Qtc2NyaXB0cyB0ZXN0IiwKICAgICJlamVjdCI6ICJyZWFjdC1zY3JpcHRzIGVqZWN0IgogIH0sCiAgImVzbGludENvbmZpZyI6IHsKICAgICJleHRlbmRzIjogWwogICAgICAicmVhY3QtYXBwIgogICAgXQogIH0sCiAgImJyb3dzZXJzbGlzdCI6IHsKICAgICJwcm9kdWN0aW9uIjogWwogICAgICAiPjAuMiUiLAogICAgICAibm90IGRlYWQiLAogICAgICAibm90IG9wX21pbmkgYWxsIgogICAgXSwKICAgICJkZXZlbG9wbWVudCI6IFsKICAgICAgImxhc3QgMSBjaHJvbWUgdmVyc2lvbiIsCiAgICAgICJsYXN0IDEgZmlyZWZveCB2ZXJzaW9uIiwKICAgICAgImxhc3QgMSBzYWZhcmkgdmVyc2lvbiIKICAgIF0KICB9LAogICJkZXZEZXBlbmRlbmNpZXMiOiB7CiAgICAicmVhY3Qtc2NyaXB0cyI6ICJeNS4wLjEiCiAgfQp9
+{
+  "name": "sections-gallery-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "@shopify/polaris": "^12.0.0",
+    "@shopify/app-bridge": "^3.7.0",
+    "@shopify/app-bridge-react": "^3.7.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.20.0",
+    "axios": "^1.6.5",
+    "@tanstack/react-query": "^5.17.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "react-scripts": "^5.0.1"
+  }
+}
