@@ -108,43 +108,53 @@ router.get('/:slug', verifyShopifySession, async (req, res) => {
 router.post('/:slug/install', verifyShopifySession, async (req, res) => {
   try {
     const { slug } = req.params;
+    const { themeId } = req.body;
 
+    // Get section
     const section = await prisma.section.findUnique({
       where: { slug },
     });
 
-    if (!section) {
+    if (!section || !section.isActive) {
       return res.status(404).json({ error: 'Section not found' });
     }
 
-    // Check if already installed
-    const existing = await prisma.installedSection.findFirst({
+    // Check subscription limit
+    const subscription = await prisma.subscription.findFirst({
       where: {
         storeId: req.store.id,
-        sectionId: section.id,
+        status: 'ACTIVE',
       },
     });
 
-    if (existing) {
-      return res.status(400).json({ error: 'Section already installed' });
+    const installedCount = await prisma.installedSection.count({
+      where: { storeId: req.store.id },
+    });
+
+    if (subscription?.sectionsLimit && installedCount >= subscription.sectionsLimit) {
+      return res.status(403).json({ 
+        error: 'Section limit reached',
+        limit: subscription.sectionsLimit,
+        installed: installedCount 
+      });
     }
 
-    // Create installation record
-    const installation = await prisma.installedSection.create({
+    // Install section
+    const installed = await prisma.installedSection.create({
       data: {
         storeId: req.store.id,
         sectionId: section.id,
-        installedAt: new Date(),
+        themeId: themeId || null,
       },
     });
 
-    // Update download count
+    // Increment download count
     await prisma.section.update({
       where: { id: section.id },
       data: { downloadCount: { increment: 1 } },
     });
 
-    res.json({ success: true, installation });
+    res.json({ success: true, installed });
   } catch (error) {
     console.error('Install section error:', error);
     res.status(500).json({ error: 'Failed to install section' });
