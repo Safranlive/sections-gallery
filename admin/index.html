@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sections Gallery - Admin Panel</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="admin-app">
+        <header class="admin-header">
+            <h1>Sections Gallery Admin</h1>
+            <nav>
+                <a href="#sections">Sections</a>
+                <a href="#users">Users</a>
+                <a href="#analytics">Analytics</a>
+            </nav>
+        </header>
+        <main id="admin-content">
+            <div class="admin-dashboard">
+                <h2>Dashboard</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>Total Sections</h3>
+                        <p id="total-sections">Loading...</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Active Users</h3>
+                        <p id="active-users">Loading...</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Total Installations</h3>
+                        <p id="total-installations">Loading...</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="admin.js"></script>
+</body>
+</html>
