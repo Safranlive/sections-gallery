@@ -31,6 +31,7 @@ const upload = multer({
   },
   fileFilter: (req, file, cb) => {
     if (file.fieldname === 'liquidCode') {
+      // Accept .liquid files or any text file for liquid code
       const allowedExts = ['.liquid', '.txt'];
       const ext = path.extname(file.originalname).toLowerCase();
       if (allowedExts.includes(ext)) {
@@ -39,6 +40,7 @@ const upload = multer({
         cb(new Error('Only .liquid files are allowed for code'));
       }
     } else if (file.fieldname === 'previewImage') {
+      // Accept common image formats
       const allowedMimes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
       if (allowedMimes.includes(file.mimetype)) {
         cb(null, true);
@@ -51,9 +53,11 @@ const upload = multer({
   }
 });
 
-// Admin authentication middleware
+// Admin authentication middleware (simple version - enhance with proper auth)
 const adminAuth = async (req, res, next) => {
   try {
+    // For now, check if user has admin role in their session
+    // TODO: Implement proper admin authentication
     const session = res.locals.shopify.session;
     
     if (!session) {
@@ -63,6 +67,7 @@ const adminAuth = async (req, res, next) => {
       });
     }
 
+    // Check if store has admin privileges
     const store = await prisma.store.findUnique({
       where: { shopifyDomain: session.shop }
     });
@@ -74,6 +79,8 @@ const adminAuth = async (req, res, next) => {
       });
     }
 
+    // Add admin check - for now, all authenticated stores have admin access
+    // TODO: Add proper role-based access control
     req.adminStore = store;
     next();
   } catch (error) {
@@ -89,12 +96,13 @@ const adminAuth = async (req, res, next) => {
 router.get('/sections', adminAuth, async (req, res) => {
   try {
     const sections = await prisma.section.findMany({
-      orderBy: { createdAt: 'desc' }
+      orderBy: { createdAt: 'desc' },
     });
-    res.json({ success: true, sections });
+
+    res.json({ sections });
   } catch (error) {
-    console.error('Get sections error:', error);
-    res.status(500).json({ success: false, error: 'Failed to fetch sections' });
+    console.error('List sections error:', error);
+    res.status(500).json({ error: 'Failed to list sections' });
   }
 });
 
@@ -104,32 +112,121 @@ router.post('/sections', adminAuth, upload.fields([
   { name: 'previewImage', maxCount: 1 }
 ]), async (req, res) => {
   try {
-    const { name, description, category, tier } = req.body;
-    
-    if (!name || !description || !category) {
-      return res.status(400).json({
-        success: false,
-        error: 'Missing required fields'
-      });
+    const {
+      name,
+      slug,
+      description,
+      category,
+      tags,
+      demoUrl,
+      availableInFree,
+      availableInPro,
+      availableInPremium
+    } = req.body;
+
+    // Read liquid code from uploaded file
+    let liquidCode = '';
+    if (req.files.liquidCode && req.files.liquidCode[0]) {
+      liquidCode = await fs.readFile(req.files.liquidCode[0].path, 'utf-8');
     }
 
-    const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-    
+    // Handle preview image
+    let previewImageUrl = null;
+    if (req.files.previewImage && req.files.previewImage[0]) {
+      // TODO: Upload to cloud storage (S3, Cloudinary, etc.)
+      // For now, store locally
+      previewImageUrl = `/uploads/${req.files.previewImage[0].filename}`;
+    }
+
     const section = await prisma.section.create({
       data: {
         name,
         slug,
         description,
         category,
-        tier: tier || 'FREE',
+        code: liquidCode,
+        previewImageUrl,
+        tags: tags ? tags.split(',').map(t => t.trim()) : [],
+        demoUrl,
+        availableInFree: availableInFree === 'true',
+        availableInPro: availableInPro === 'true',
+        availableInPremium: availableInPremium === 'true',
         isActive: true,
+      },
+    });
+
+    res.status(201).json({ section });
+  } catch (error) {
+    console.error('Create section error:', error);
+    res.status(500).json({ error: 'Failed to create section' });
+  }
+});
+
+// PUT /api/admin/sections/:id - Update section
+router.put('/sections/:id', adminAuth, upload.fields([
+  { name: 'liquidCode', maxCount: 1 },
+  { name: 'previewImage', maxCount: 1 }
+`), async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updateData = {};
+
+    // Update text fields
+    const textFields = ['name', 'slug', 'description', 'category', 'demoUrl'];
+    textFields.forEach(field => {
+      if (req.body[field] !== undefined) {
+        updateData[field] = req.body[field];
       }
     });
 
-    res.json({ success: true, section });
+    // Update boolean fields
+    const boolFields = ['availableInFree', 'availableInPro', 'availableInPremium', 'isActive'];
+    boolFields.forEach(field => {
+      if (req.body[field] !== undefined) {
+        updateData[field] = req.body[field] === 'true';
+      }
+    });
+
+    // Update tags
+    if (req.body.tags) {
+      updateData.tags = req.body.tags.split(',').map(t => t.trim());
+    }
+
+    // Update liquid code if provided
+    if (req.files.liquidCode && req.files.liquidCode[0]) {
+      updateData.code = await fs.readFile(req.files.liquidCode[0].path, 'utf-8');
+    }
+
+    // Update preview image if provided
+    if (req.files.previewImage && req.files.previewImage[0]) {
+      updateData.previewImageUrl = `/uploads/${req.files.previewImage[0].filename}`;
+    }
+
+    const section = await prisma.section.update({
+      where: { id },
+      data: updateData,
+    });
+
+    res.json({ section });
   } catch (error) {
-    console.error('Create section error:', error);
-    res.status(500).json({ success: false, error: 'Failed to create section' });
+    console.error('Update section error:', error);
+    res.status(500).json({ error: 'Failed to update section' });
+  }
+});
+
+// DELETE /api/admin/sections/:id - Delete section
+router.delete('/sections/:id', adminAuth, async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    await prisma.section.delete({
+      where: { id },
+    });
+
+    res.json({ message: 'Section deleted successfully' });
+  } catch (error) {
+    console.error('Delete section error:', error);
+    res.status(500).json({ error: 'Failed to delete section' });
   }
 });
 
