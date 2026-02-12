@@ -1,1 +1,79 @@
-Ly8gU2VjdGlvbnMgR2FsbGVyeSBDdXN0b21lciBBcHAgLSBNYWluIENvbXBvbmVudAovLyBTaG9waWZ5IEVtYmVkZGVkIEFwcCB3aXRoIG5hdGl2ZSBQb2xhcmlzIFVJCgppbXBvcnQgUmVhY3QsIHsgdXNlU3RhdGUsIHVzZUVmZmVjdCB9IGZyb20gJ3JlYWN0JzsKaW1wb3J0IHsgQnJvd3NlclJvdXRlciBhcyBSb3V0ZXIsIFJvdXRlcywgUm91dGUsIE5hdmlnYXRlIH0gZnJvbSAncmVhY3Qtcm91dGVyLWRvbSc7CmltcG9ydCB7IEFwcFByb3ZpZGVyLCBGcmFtZSwgTG9hZGluZyB9IGZyb20gJ0BzaG9waWZ5L3BvbGFyaXMnOwppbXBvcnQgJ0BzaG9waWZ5L3BvbGFyaXMvYnVpbGQvZXNtL3N0eWxlcy5jc3MnOwppbXBvcnQgZW5UcmFuc2xhdGlvbnMgZnJvbSAnQHNob3BpZnkvcG9sYXJpcy9sb2NhbGVzL2VuLmpzb24nOwoKLy8gUGFnZXMKaW1wb3J0IE1hcmtldHBsYWNlIGZyb20gJy4vcGFnZXMvTWFya2V0cGxhY2UnOwppbXBvcnQgU2VjdGlvbkRldGFpbCBmcm9tICcuL3BhZ2VzL1NlY3Rpb25EZXRhaWwnOwppbXBvcnQgTXlTZWN0aW9ucyBmcm9tICcuL3BhZ2VzL015U2VjdGlvbnMnOwppbXBvcnQgSW5zdGFsbFNlY3Rpb24gZnJvbSAnLi9wYWdlcy9JbnN0YWxsU2VjdGlvbic7CgovLyBBUEkKaW1wb3J0IGFwaSBmcm9tICcuL3NlcnZpY2VzL2FwaSc7CgpmdW5jdGlvbiBBcHAoKSB7CiAgY29uc3QgW3Nob3AsIHNldFNob3BdID0gdXNlU3RhdGUobnVsbCk7CiAgY29uc3QgW2xvYWRpbmcsIHNldExvYWRpbmddID0gdXNlU3RhdGUodHJ1ZSk7CgogIHVzZUVmZmVjdCgoKSA9PiB7CiAgICAvLyBHZXQgc2hvcCBmcm9tIFVSTCBwYXJhbXMKICAgIGNvbnN0IHBhcmFtcyA9IG5ldyBVUkxTZWFyY2hQYXJhbXMod2luZG93LmxvY2F0aW9uLnNlYXJjaCk7CiAgICBjb25zdCBzaG9wUGFyYW0gPSBwYXJhbXMuZ2V0KCdzaG9wJyk7CiAgICAKICAgIGlmIChzaG9wUGFyYW0pIHsKICAgICAgc2V0U2hvcChzaG9wUGFyYW0pOwogICAgICBsb2NhbFN0b3JhZ2Uuc2V0SXRlbSgnc2hvcCcsIHNob3BQYXJhbSk7CiAgICB9IGVsc2UgewogICAgICBjb25zdCBzdG9yZWRTaG9wID0gbG9jYWxTdG9yYWdlLmdldEl0ZW0oJ3Nob3AnKTsKICAgICAgaWYgKHN0b3JlZFNob3ApIHsKICAgICAgICBzZXRTaG9wKHN0b3JlZFNob3ApOwogICAgICB9CiAgICB9CiAgICAKICAgIHNldExvYWRpbmcoZmFsc2UpOwogIH0sIFtdKTsKCiAgaWYgKGxvYWRpbmcpIHsKICAgIHJldHVybiAoCiAgICAgIDxBcHBQcm92aWRlciBpMThuPXtlblRyYW5zbGF0aW9uc30+CiAgICAgICAgPEZyYW1lPgogICAgICAgICAgPExvYWRpbmcgLz4KICAgICAgICA8L0ZyYW1lPgogICAgICA8L0FwcFByb3ZpZGVyPgogICAgKTsKICB9CgogIGlmICghc2hvcCkgewogICAgcmV0dXJuICgKICAgICAgPEFwcFByb3ZpZGVyIGkxOG49e2VuVHJhbnNsYXRpb25zfT4KICAgICAgICA8RnJhbWU+CiAgICAgICAgICA8ZGl2IHN0eWxlPXt7IHBhZGRpbmc6ICcycmVtJywgdGV4dEFsaWduOiAnY2VudGVyJyB9fT4KICAgICAgICAgICAgPGgxPldlbGNvbWUgdG8gU2VjdGlvbnMgR2FsbGVyeTwvaDE+CiAgICAgICAgICAgIDxwPlBsZWFzZSBpbnN0YWxsIHRoZSBhcHAgZnJvbSB5b3VyIFNob3BpZnkgYWRtaW4uPC9wPgogICAgICAgICAgPC9kaXY+CiAgICAgICAgPC9GcmFtZT4KICAgICAgPC9BcHBQcm92aWRlcj4KICAgICk7CiAgfQoKICByZXR1cm4gKAogICAgPEFwcFByb3ZpZGVyIGkxOG49e2VuVHJhbnNsYXRpb25zfT4KICAgICAgPFJvdXRlcj4KICAgICAgICA8Um91dGVzPgogICAgICAgICAgPFJvdXRlIHBhdGg9Ii8iIGVsZW1lbnQ9ezxOYXZpZ2F0ZSB0bz0iL21hcmtldHBsYWNlIiByZXBsYWNlIC8+fSAvPgogICAgICAgICAgPFJvdXRlIHBhdGg9Ii9tYXJrZXRwbGFjZSIgZWxlbWVudD17PE1hcmtldHBsYWNlIHNob3A9e3Nob3B9IC8+fSAvPgogICAgICAgICAgPFJvdXRlIHBhdGg9Ii9zZWN0aW9ucy86aWQiIGVsZW1lbnQ9ezxTZWN0aW9uRGV0YWlsIHNob3A9e3Nob3B9IC8+fSAvPgogICAgICAgICAgPFJvdXRlIHBhdGg9Ii9teS1zZWN0aW9ucyIgZWxlbWVudD17PE15U2VjdGlvbnMgc2hvcD17c2hvcH0gLz59IC8+CiAgICAgICAgICA8Um91dGUgcGF0aD0iL2luc3RhbGwvOnNlY3Rpb25JZCIgZWxlbWVudD17PEluc3RhbGxTZWN0aW9uIHNob3A9e3Nob3B9IC8+fSAvPgogICAgICAgIDwvUm91dGVzPgogICAgICA8L1JvdXRlcj4KICAgIDwvQXBwUHJvdmlkZXI+CiAgKTsKfQoKZXhwb3J0IGRlZmF1bHQgQXBwOwo=
+// Sections Gallery Customer App - Main Component
+// Shopify Embedded App with native Polaris UI
+
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { AppProvider, Frame, Loading } from '@shopify/polaris';
+import '@shopify/polaris/build/esm/styles.css';
+import enTranslations from '@shopify/polaris/locales/en.json';
+
+// Pages
+import Marketplace from './pages/Marketplace';
+import SectionDetail from './pages/SectionDetail';
+import MySections from './pages/MySections';
+import InstallSection from './pages/InstallSection';
+
+// API
+import api from './services/api';
+
+function App() {
+  const [shop, setShop] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Get shop from URL params
+    const params = new URLSearchParams(window.location.search);
+    const shopParam = params.get('shop');
+    
+    if (shopParam) {
+      setShop(shopParam);
+      localStorage.setItem('shop', shopParam);
+    } else {
+      const storedShop = localStorage.getItem('shop');
+      if (storedShop) {
+        setShop(storedShop);
+      }
+    }
+    
+    setLoading(false);
+  }, []);
+
+  if (loading) {
+    return (
+      <AppProvider i18n={enTranslations}>
+        <Frame>
+          <Loading />
+        </Frame>
+      </AppProvider>
+    );
+  }
+
+  if (!shop) {
+    return (
+      <AppProvider i18n={enTranslations}>
+        <Frame>
+          <div style={{ padding: '2rem', textAlign: 'center' }}>
+            <h1>Welcome to Sections Gallery</h1>
+            <p>Please install the app from your Shopify admin.</p>
+          </div>
+        </Frame>
+      </AppProvider>
+    );
+  }
+
+  return (
+    <AppProvider i18n={enTranslations}>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Navigate to="/marketplace" replace />} />
+          <Route path="/marketplace" element={<Marketplace shop={shop} />} />
+          <Route path="/sections/:id" element={<SectionDetail shop={shop} />} />
+          <Route path="/my-sections" element={<MySections shop={shop} />} />
+          <Route path="/install/:sectionId" element={<InstallSection shop={shop} />} />
+        </Routes>
+      </Router>
+    </AppProvider>
+  );
+}
+
+export default App;
