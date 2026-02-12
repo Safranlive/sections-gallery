@@ -1,0 +1,10 @@
+api_version = "2024-01"
+
+[[extensions]]
+type = "theme"
+name = "sections-gallery-sections"
+handle = "sections-gallery"
+
+[extensions.settings]
+  [[extensions.settings.categories]]
+  name = "Sections Gallery Premium"
