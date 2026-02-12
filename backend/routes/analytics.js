@@ -109,14 +109,14 @@ router.get('/timeline', verifyShopifySession, async (req, res) => {
 // Track custom event
 router.post('/track', verifyShopifySession, async (req, res) => {
   try {
-    const { eventType, sectionId, metadata } = req.body;
+    const { eventType, sectionName, metadata } = req.body;
 
     await prisma.analytics.create({
       data: {
         storeId: req.store.id,
-        sectionId,
         eventType,
-        metadata,
+        sectionName,
+        metadata: metadata || {},
       },
     });
 
