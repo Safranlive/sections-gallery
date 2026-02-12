@@ -6,10 +6,11 @@ import {
   ProductsMinor,
   CashDollarMinor,
   AnalyticsMajor,
-  SettingsMajor
+  SettingsMajor,
+  CustomersMinor,
 } from '@shopify/polaris-icons';
 
-export default function NavigationMenu() {
+export default function AppNavigation() {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -18,35 +19,71 @@ export default function NavigationMenu() {
       <Navigation.Section
         items={[
           {
+            url: '/',
             label: 'Dashboard',
             icon: HomeMinor,
-            onClick: () => navigate('/'),
-            selected: location.pathname === '/'
+            selected: location.pathname === '/',
+            onClick: (e) => {
+              e.preventDefault();
+              navigate('/');
+            },
           },
           {
+            url: '/sections',
             label: 'Sections',
             icon: ProductsMinor,
-            onClick: () => navigate('/sections'),
-            selected: location.pathname === '/sections'
+            selected: location.pathname === '/sections',
+            onClick: (e) => {
+              e.preventDefault();
+              navigate('/sections');
+            },
           },
           {
+            url: '/pricing',
             label: 'Pricing',
             icon: CashDollarMinor,
-            onClick: () => navigate('/pricing'),
-            selected: location.pathname === '/pricing'
+            selected: location.pathname === '/pricing',
+            onClick: (e) => {
+              e.preventDefault();
+              navigate('/pricing');
+            },
           },
           {
+            url: '/analytics',
             label: 'Analytics',
             icon: AnalyticsMajor,
-            onClick: () => navigate('/analytics'),
-            selected: location.pathname === '/analytics'
+            selected: location.pathname === '/analytics',
+            onClick: (e) => {
+              e.preventDefault();
+              navigate('/analytics');
+            },
+          },
+        ]}
+      />
+      <Navigation.Section
+        title="Management"
+        items={[
+          {
+            url: '/admin',
+            label: 'Admin Panel',
+            icon: CustomersMinor,
+            selected: location.pathname === '/admin',
+            onClick: (e) => {
+              e.preventDefault();
+              navigate('/admin');
+            },
+            badge: 'New',
           },
           {
+            url: '/settings',
             label: 'Settings',
             icon: SettingsMajor,
-            onClick: () => navigate('/settings'),
-            selected: location.pathname === '/settings'
-          }
+            selected: location.pathname === '/settings',
+            onClick: (e) => {
+              e.preventDefault();
+              navigate('/settings');
+            },
+          },
         ]}
       />
     </Navigation>
