@@ -1,0 +1,64 @@
+{
+  "name": "sections-gallery",
+  "version": "2.0.0",
+  "description": "Premium Shopify section marketplace with Shopify Billing API integration",
+  "main": "server.js",
+  "scripts": {
+    "dev": "concurrently \"npm run server\" \"npm run client\" \"npm run admin\"",
+    "server": "nodemon server.js",
+    "client": "cd frontend && npm start",
+    "admin": "cd admin && npm start",
+    "build": "npm run build:client && npm run build:admin",
+    "build:client": "cd frontend && npm run build",
+    "build:admin": "cd admin && npm run build",
+    "start": "node server.js",
+    "migrate": "npx prisma migrate dev",
+    "migrate:deploy": "npx prisma migrate deploy",
+    "seed": "node seed.js",
+    "studio": "npx prisma studio",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "shopify",
+    "sections",
+    "marketplace",
+    "shopify-app",
+    "sections-gallery",
+    "ecommerce"
+  ],
+  "author": {
+    "name": "Shafran Mohamed",
+    "email": "safranlive@gmail.com",
+    "company": "SYSTO",
+    "website": "https://www.systo.lk"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Safranlive/sections-gallery.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Safranlive/sections-gallery/issues",
+    "email": "safranlive@gmail.com"
+  },
+  "homepage": "https://github.com/Safranlive/sections-gallery#readme",
+  "license": "PROPRIETARY",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.8.0",
+    "@shopify/shopify-api": "^9.0.0",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "jsonwebtoken": "^9.0.2",
+    "prisma": "^5.8.0"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "nodemon": "^3.0.2"
+  }
+}
