@@ -1,17 +1,21 @@
+// Sections Gallery API Service
+// Axios-based API client for backend communication
+
 import axios from 'axios';
 
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL || '/api',
+  baseURL: `${API_URL}/api`,
   headers: {
     'Content-Type': 'application/json'
-  },
-  withCredentials: true
+  }
 });
 
-// Request interceptor for adding auth token
+// Request interceptor for adding auth tokens
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('authToken');
+    const token = localStorage.getItem('token');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -24,12 +28,14 @@ api.interceptors.request.use(
 
 // Response interceptor for handling errors
 api.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    return response;
+  },
   (error) => {
     if (error.response?.status === 401) {
-      // Redirect to login or handle unauthorized
-      localStorage.removeItem('authToken');
-      window.location.href = '/auth/login';
+      // Unauthorized - clear token and redirect to login
+      localStorage.removeItem('token');
+      window.location.href = '/';
     }
     return Promise.reject(error);
   }
