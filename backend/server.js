@@ -33,69 +33,13 @@ const SHOPIFY_API_SECRET = process.env.SHOPIFY_API_SECRET;
 const SCOPES = 'read_themes,write_themes,read_products,write_script_tags';
 const APP_URL = process.env.APP_URL;
 
-// ================================================================================
-// UTILITY FUNCTIONS
-// ================================================================================
+// Health check
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+});
 
-// Generate nonce for OAuth
-function generateNonce() {
-  return crypto.randomBytes(16).toString('hex');
-}
-
-// Verify Shopify HMAC
-function verifyShopifyHmac(query, hmac) {
-  const message = Object.keys(query)
-    .filter(key => key !== 'hmac' && key !== 'signature')
-    .map(key => `${key}=${query[key]}`)
-    .sort()
-    .join('&');
-  
-  const generatedHash = crypto
-    .createHmac('sha256', SHOPIFY_API_SECRET)
-    .update(message)
-    .digest('hex');
-  
-  return crypto.timingSafeEqual(
-    Buffer.from(generatedHash),
-    Buffer.from(hmac)
-  );
-}
-
-// Encrypt access token
-function encryptToken(token) {
-  const algorithm = 'aes-256-cbc';
-  const key = crypto.scryptSync(SHOPIFY_API_SECRET, 'salt', 32);
-  const iv = crypto.randomBytes(16);
-  const cipher = crypto.createCipheriv(algorithm, key, iv);
-  
-  let encrypted = cipher.update(token, 'utf8', 'hex');
-  encrypted += cipher.final('hex');
-  
-  return iv.toString('hex') + ':' + encrypted;
-}
-
-// Decrypt access token
-function decryptToken(encryptedToken) {
-  const algorithm = 'aes-256-cbc';
-  const key = crypto.scryptSync(SHOPIFY_API_SECRET, 'salt', 32);
-  const parts = encryptedToken.split(':');
-  const iv = Buffer.from(parts[0], 'hex');
-  const encrypted = parts[1];
-  const decipher = crypto.createDecipheriv(algorithm, key, iv);
-  
-  let decrypted = decipher.update(encrypted, 'hex', 'utf8');
-  decrypted += decipher.final('utf8');
-  
-  return decrypted;
-}
-
-// Note: Additional server code continues...
-// This is a placeholder for the complete implementation
-
-const PORT = process.env.PORT || 3001;
-
+// Start server
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Sections Gallery backend running on port ${PORT}`);
 });
-
-module.exports = app;
