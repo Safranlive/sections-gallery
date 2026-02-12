@@ -88,15 +88,18 @@ class EmailService {
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
         <h1 style="color: #2C3E50;">Subscription Confirmed! 🎊</h1>
         <p>Hi ${storeName},</p>
-        <p>Your ${tier} subscription is now active!</p>
+        <p>Your subscription to the <strong>${tier.toUpperCase()}</strong> plan has been confirmed!</p>
         
-        <div style="background: #f4f4f4; padding: 20px; border-radius: 5px; margin: 20px 0;">
-          <h3>Subscription Details</h3>
-          <p><strong>Plan:</strong> ${tier}</p>
+        <div style="background: #f8f9fa; padding: 20px; border-radius: 5px; margin: 20px 0;">
+          <h3 style="margin-top: 0;">Plan Details</h3>
+          <p><strong>Plan:</strong> ${tier.charAt(0).toUpperCase() + tier.slice(1)}</p>
           <p><strong>Price:</strong> $${price}/month</p>
+          <p><strong>Billing:</strong> Monthly</p>
         </div>
 
-        <p>You now have full access to all ${tier} tier features. Start exploring premium sections in your dashboard!</p>
+        <p>You now have access to all premium features. Start exploring unlimited sections in your dashboard!</p>
+
+        <p>Questions about your subscription? <a href="${process.env.SHOPIFY_APP_URL}/support" style="color: #3498DB;">Contact our support team</a></p>
 
         <p>Best regards,<br>The Sections Gallery Team</p>
       </div>
@@ -112,6 +115,45 @@ class EmailService {
       console.log(`Subscription confirmation sent to ${email}`);
     } catch (error) {
       console.error('Error sending subscription confirmation:', error);
+    }
+  }
+
+  /**
+   * Send section installation notification
+   */
+  async sendInstallationNotification(email, storeName, sectionName) {
+    if (!this.transporter) return;
+
+    const subject = `Section Installed: ${sectionName}`;
+    const html = `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+        <h1 style="color: #2C3E50;">Section Successfully Installed!</h1>
+        <p>Hi ${storeName},</p>
+        <p>The <strong>${sectionName}</strong> section has been successfully installed to your store.</p>
+        
+        <h3>Next Steps:</h3>
+        <ol>
+          <li>Go to your Shopify theme editor</li>
+          <li>Find the ${sectionName} section in your sections library</li>
+          <li>Add it to any page you'd like</li>
+          <li>Customize the settings to match your brand</li>
+        </ol>
+
+        <p>Need help customizing? Check out our <a href="${process.env.SHOPIFY_APP_URL}/docs" style="color: #3498DB;">documentation</a>.</p>
+
+        <p>Happy building!<br>The Sections Gallery Team</p>
+      </div>
+    `;
+
+    try {
+      await this.transporter.sendMail({
+        from: `"Sections Gallery" <${process.env.SMTP_USER}>`,
+        to: email,
+        subject,
+        html,
+      });
+    } catch (error) {
+      console.error('Error sending installation notification:', error);
     }
   }
 }
