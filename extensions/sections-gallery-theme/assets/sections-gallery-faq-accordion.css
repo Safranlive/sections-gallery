@@ -1,0 +1,227 @@
+/* Sections Gallery - FAQ Accordion Styles */
+
+.sf-faq-section {
+  background-color: var(--sf-bg-color, #ffffff);
+  color: var(--sf-text-color, #333);
+  padding: 80px 0;
+}
+
+.sf-faq-wrapper {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Header */
+.sf-faq-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.sf-faq-heading {
+  font-size: clamp(32px, 5vw, 48px);
+  font-weight: 700;
+  margin: 0 0 16px 0;
+  color: var(--sf-text-color);
+}
+
+.sf-faq-subheading {
+  font-size: clamp(16px, 2vw, 20px);
+  margin: 0;
+  opacity: 0.8;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Accordion */
+.sf-faq-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* FAQ Item */
+.sf-faq-item {
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  background: #ffffff;
+}
+
+.sf-faq-item:hover {
+  border-color: var(--sf-accent-color, #ff6b35);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.sf-faq-item-open {
+  border-color: var(--sf-accent-color, #ff6b35);
+  box-shadow: 0 4px 20px rgba(255, 107, 53, 0.15);
+}
+
+/* Question Button */
+.sf-faq-question {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 24px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.3s ease;
+}
+
+.sf-faq-question:hover {
+  background: rgba(255, 107, 53, 0.05);
+}
+
+.sf-faq-question-text {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--sf-text-color);
+  line-height: 1.4;
+}
+
+/* Icon */
+.sf-faq-icon {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--sf-accent-color, #ff6b35);
+  color: #ffffff;
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+}
+
+.sf-faq-item-open .sf-faq-icon {
+  transform: rotate(180deg);
+}
+
+.sf-faq-icon svg {
+  display: block;
+}
+
+/* Answer */
+.sf-faq-answer {
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.sf-faq-answer[hidden] {
+  display: block;
+  max-height: 0;
+  opacity: 0;
+}
+
+.sf-faq-item-open .sf-faq-answer {
+  max-height: 1000px;
+  opacity: 1;
+}
+
+.sf-faq-answer-content {
+  padding: 0 24px 24px 24px;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--sf-text-color);
+  opacity: 0.9;
+}
+
+.sf-faq-answer-content p {
+  margin: 0 0 12px 0;
+}
+
+.sf-faq-answer-content p:last-child {
+  margin-bottom: 0;
+}
+
+.sf-faq-answer-content ul,
+.sf-faq-answer-content ol {
+  margin: 12px 0;
+  padding-left: 24px;
+}
+
+.sf-faq-answer-content li {
+  margin-bottom: 8px;
+}
+
+.sf-faq-answer-content a {
+  color: var(--sf-accent-color, #ff6b35);
+  text-decoration: underline;
+}
+
+.sf-faq-answer-content a:hover {
+  text-decoration: none;
+}
+
+/* Contact Section */
+.sf-faq-contact {
+  margin-top: 60px;
+  padding: 40px;
+  background: linear-gradient(135deg, var(--sf-accent-color, #ff6b35) 0%, #ff8f66 100%);
+  border-radius: 16px;
+  text-align: center;
+  color: #ffffff;
+}
+
+.sf-faq-contact p {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.sf-faq-contact-btn {
+  display: inline-block;
+  padding: 14px 32px;
+  background: #ffffff;
+  color: var(--sf-accent-color, #ff6b35);
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.sf-faq-contact-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .sf-faq-section {
+    padding: 60px 0;
+  }
+
+  .sf-faq-wrapper {
+    padding: 0 16px;
+  }
+
+  .sf-faq-header {
+    margin-bottom: 40px;
+  }
+
+  .sf-faq-question {
+    padding: 20px 16px;
+    gap: 16px;
+  }
+
+  .sf-faq-question-text {
+    font-size: 16px;
+  }
+
+  .sf-faq-answer-content {
+    padding: 0 16px 20px 16px;
+    font-size: 14px;
+  }
+
+  .sf-faq-contact {
+    margin-top: 40px;
+    padding: 32px 20px;
+  }
+}
