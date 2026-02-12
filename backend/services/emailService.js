@@ -86,22 +86,17 @@ class EmailService {
     const subject = `Subscription Confirmed - ${tier.charAt(0).toUpperCase() + tier.slice(1)} Plan`;
     const html = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-        <h1 style="color: #2C3E50;">Subscription Confirmed! 🎉</h1>
+        <h1 style="color: #2C3E50;">Subscription Confirmed! 🎊</h1>
         <p>Hi ${storeName},</p>
-        <p>Your subscription to the <strong>${tier}</strong> plan has been confirmed.</p>
+        <p>Your ${tier} subscription is now active!</p>
         
-        <h2 style="color: #2C3E50;">Subscription Details</h2>
-        <ul>
-          <li><strong>Plan:</strong> ${tier}</li>
-          <li><strong>Price:</strong> $${price}/month</li>
-          <li><strong>Billing:</strong> Monthly</li>
-        </ul>
+        <div style="background: #f4f4f4; padding: 20px; border-radius: 5px; margin: 20px 0;">
+          <h3>Subscription Details</h3>
+          <p><strong>Plan:</strong> ${tier}</p>
+          <p><strong>Price:</strong> $${price}/month</p>
+        </div>
 
-        <p>You now have access to all ${tier} features. Start exploring!</p>
-
-        <p><a href="${process.env.SHOPIFY_APP_URL}" style="background: #3498DB; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; display: inline-block;">Go to Dashboard</a></p>
-
-        <p>Questions? Contact us anytime at support@sections-gallery.com</p>
+        <p>You now have full access to all ${tier} tier features. Start exploring premium sections in your dashboard!</p>
 
         <p>Best regards,<br>The Sections Gallery Team</p>
       </div>
@@ -117,48 +112,6 @@ class EmailService {
       console.log(`Subscription confirmation sent to ${email}`);
     } catch (error) {
       console.error('Error sending subscription confirmation:', error);
-    }
-  }
-
-  /**
-   * Send section installed notification
-   */
-  async sendSectionInstalledNotification(email, storeName, sectionName) {
-    if (!this.transporter) return;
-
-    const subject = `Section Installed: ${sectionName}`;
-    const html = `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-        <h1 style="color: #2C3E50;">Section Installed Successfully!</h1>
-        <p>Hi ${storeName},</p>
-        <p>The <strong>${sectionName}</strong> section has been successfully installed to your theme.</p>
-        
-        <h2 style="color: #2C3E50;">Next Steps</h2>
-        <ol>
-          <li>Go to your Shopify theme editor</li>
-          <li>Add the section to your desired page</li>
-          <li>Customize the settings to match your brand</li>
-          <li>Preview and publish!</li>
-        </ol>
-
-        <p><a href="https://${storeName}/admin/themes" style="background: #3498DB; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; display: inline-block;">Open Theme Editor</a></p>
-
-        <p>Need help? Check our <a href="${process.env.SHOPIFY_APP_URL}/docs" style="color: #3498DB;">documentation</a>.</p>
-
-        <p>Happy customizing!<br>The Sections Gallery Team</p>
-      </div>
-    `;
-
-    try {
-      await this.transporter.sendMail({
-        from: `"Sections Gallery" <${process.env.SMTP_USER}>`,
-        to: email,
-        subject,
-        html,
-      });
-      console.log(`Section installed notification sent to ${email}`);
-    } catch (error) {
-      console.error('Error sending section installed notification:', error);
     }
   }
 }
