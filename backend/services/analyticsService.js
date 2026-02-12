@@ -155,7 +155,7 @@ class AnalyticsService {
         totalInstallations,
         activeSections,
         topSections,
-        period: `${days} days`,
+        period: days,
       };
     } catch (error) {
       console.error('Error getting store summary:', error);
@@ -164,36 +164,47 @@ class AnalyticsService {
   }
 
   /**
-   * Get section performance metrics
+   * Get analytics for a specific section
    */
-  async getSectionMetrics(sectionId, days = 30) {
+  async getSectionAnalytics(sectionId, days = 30) {
     try {
       const startDate = new Date();
       startDate.setDate(startDate.getDate() - days);
 
-      const metrics = await prisma.analytics.groupBy({
-        by: ['eventType'],
+      const installations = await prisma.analytics.count({
         where: {
           sectionId,
+          eventType: 'installation',
           createdAt: {
             gte: startDate,
           },
         },
-        _count: true,
       });
 
-      const formatted = {};
-      metrics.forEach(m => {
-        formatted[m.eventType] = m._count;
+      const pageViews = await prisma.analytics.count({
+        where: {
+          sectionId,
+          eventType: 'page_view',
+          createdAt: {
+            gte: startDate,
+          },
+        },
+      });
+
+      const activeInstalls = await prisma.installedSection.count({
+        where: {
+          sectionId,
+        },
       });
 
       return {
-        sectionId,
-        period: `${days} days`,
-        metrics: formatted,
+        installations,
+        pageViews,
+        activeInstalls,
+        period: days,
       };
     } catch (error) {
-      console.error('Error getting section metrics:', error);
+      console.error('Error getting section analytics:', error);
       throw error;
     }
   }
