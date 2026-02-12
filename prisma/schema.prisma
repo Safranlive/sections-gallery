@@ -1,0 +1,111 @@
+// This is your Prisma schema file
+// Learn more: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Store {
+  id            String        @id @default(cuid())
+  shopifyDomain String        @unique
+  accessToken   String
+  email         String?
+  name          String?
+  plan          String        @default("free")
+  isActive      Boolean       @default(true)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  
+  subscription  Subscription?
+  licenses      License[]
+  analytics     Analytics[]
+
+  @@index([shopifyDomain])
+  @@map("stores")
+}
+
+model Subscription {
+  id                String   @id @default(cuid())
+  storeId           String   @unique
+  tier              String   // free, pro, premium
+  status            String   // active, cancelled, expired
+  currentPeriodEnd  DateTime?
+  cancelAtPeriodEnd Boolean  @default(false)
+  stripeCustomerId  String?
+  stripeSubscriptionId String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  store Store @relation(fields: [storeId], references: [id], onDelete: Cascade)
+
+  @@map("subscriptions")
+}
+
+model Section {
+  id               String    @id @default(cuid())
+  name             String
+  slug             String    @unique
+  description      String?
+  category         String?
+  isPremium        Boolean   @default(false)
+  requiredTier     String    @default("free") // free, pro, premium
+  liquidCode       String    @db.Text
+  previewImageUrl  String?
+  demoUrl          String?
+  installCount     Int       @default(0)
+  isActive         Boolean   @default(true)
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  licenses  License[]
+  analytics Analytics[]
+
+  @@index([slug])
+  @@index([category])
+  @@map("sections")
+}
+
+model License {
+  id          String    @id @default(cuid())
+  key         String    @unique
+  storeId     String
+  sectionId   String
+  tier        String    // free, pro, premium
+  status      String    @default("active") // active, suspended, revoked
+  activatedAt DateTime  @default(now())
+  expiresAt   DateTime?
+  revokedAt   DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  store   Store   @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  section Section @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+
+  @@index([storeId])
+  @@index([sectionId])
+  @@index([key])
+  @@map("licenses")
+}
+
+model Analytics {
+  id         String   @id @default(cuid())
+  storeId    String
+  sectionId  String?
+  eventType  String   // installation, uninstallation, activation, view
+  metadata   Json?
+  createdAt  DateTime @default(now())
+
+  store   Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  section Section? @relation(fields: [sectionId], references: [id], onDelete: SetNull)
+
+  @@index([storeId])
+  @@index([sectionId])
+  @@index([eventType])
+  @@index([createdAt])
+  @@map("analytics")
+}
