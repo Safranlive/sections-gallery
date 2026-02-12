@@ -107,7 +107,7 @@ class LicenseService {
       if (license.expiresAt && new Date() > license.expiresAt) {
         return {
           valid: false,
-          reason: 'License expired',
+          reason: 'License has expired',
         };
       }
 
@@ -129,55 +129,34 @@ class LicenseService {
    */
   canAccessSection(subscriptionTier, sectionTier) {
     const tierHierarchy = {
-      FREE: 0,
-      PRO: 1,
-      PREMIUM: 2,
+      FREE: 1,
+      PRO: 2,
+      PREMIUM: 3,
     };
 
-    const subLevel = tierHierarchy[subscriptionTier] || 0;
-    const secLevel = tierHierarchy[sectionTier] || 0;
+    const userLevel = tierHierarchy[subscriptionTier] || 0;
+    const sectionLevel = tierHierarchy[sectionTier] || 999;
 
-    return subLevel >= secLevel;
+    return userLevel >= sectionLevel;
   }
 
   /**
-   * Deactivate a license
+   * Revoke a license
    */
-  async deactivateLicense(licenseKey) {
+  async revokeLicense(licenseKey) {
     try {
       const license = await prisma.license.update({
         where: { key: licenseKey },
         data: {
-          status: 'inactive',
-          deactivatedAt: new Date(),
+          status: 'revoked',
+          revokedAt: new Date(),
         },
       });
 
       return license;
     } catch (error) {
-      console.error('Error deactivating license:', error);
-      throw new Error('Failed to deactivate license');
-    }
-  }
-
-  /**
-   * Reactivate a license
-   */
-  async reactivateLicense(licenseKey) {
-    try {
-      const license = await prisma.license.update({
-        where: { key: licenseKey },
-        data: {
-          status: 'active',
-          activatedAt: new Date(),
-          deactivatedAt: null,
-        },
-      });
-
-      return license;
-    } catch (error) {
-      console.error('Error reactivating license:', error);
-      throw new Error('Failed to reactivate license');
+      console.error('Error revoking license:', error);
+      throw new Error('Failed to revoke license');
     }
   }
 
@@ -193,16 +172,58 @@ class LicenseService {
             select: {
               name: true,
               slug: true,
-              category: true,
+              tier: true,
             },
           },
         },
-        orderBy: { createdAt: 'desc' },
+        orderBy: { activatedAt: 'desc' },
       });
 
       return licenses;
     } catch (error) {
       console.error('Error getting store licenses:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Deactivate all licenses for a store (when subscription canceled)
+   */
+  async deactivateStoreLicenses(storeId) {
+    try {
+      await prisma.license.updateMany({
+        where: {
+          storeId,
+          status: 'active',
+        },
+        data: {
+          status: 'suspended',
+          suspendedAt: new Date(),
+        },
+      });
+    } catch (error) {
+      console.error('Error deactivating store licenses:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Reactivate all licenses for a store (when subscription renewed)
+   */
+  async reactivateStoreLicenses(storeId) {
+    try {
+      await prisma.license.updateMany({
+        where: {
+          storeId,
+          status: 'suspended',
+        },
+        data: {
+          status: 'active',
+          suspendedAt: null,
+        },
+      });
+    } catch (error) {
+      console.error('Error reactivating store licenses:', error);
       throw error;
     }
   }
