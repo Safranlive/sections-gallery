@@ -105,17 +105,26 @@ router.post('/themes/:themeId/install-section', verifyShopifySession, async (req
     };
 
     const client = new shopify.clients.Rest({ session });
-    const response = await client.put({
+    await client.put({
       path: `themes/${themeId}/assets`,
       data: {
         asset: {
-          key: `sections/${section.slug}.liquid`,
-          value: section.liquidCode,
+          key: `sections/${section.slug}.lisuid`,
+          value: section.code,
         },
       },
     });
 
-    res.json({ success: true, asset: response.body.asset });
+    // Update last used timestamp
+    await prisma.installedSection.update({
+      where: { id: installed.id },
+      data: { 
+        lastUsedAt: new Date(), 
+        usageCount: { increment: 1 } 
+      },
+    });
+
+    res.json({ success: true });
   } catch (error) {
     console.error('Install section to theme error:', error);
     res.status(500).json({ error: 'Failed to install section to theme' });
