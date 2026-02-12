@@ -121,6 +121,7 @@ router.post('/create-checkout', async (req, res) => {
       cancel_url: `${process.env.FRONTEND_URL}/pricing`,
       metadata: {
         storeId: store.id,
+        shopifyDomain: shop,
         planType,
       },
     });
@@ -133,40 +134,46 @@ router.post('/create-checkout', async (req, res) => {
 });
 
 /**
- * Verify subscription after successful checkout
+ * Cancel subscription
  */
-router.get('/verify/:sessionId', async (req, res) => {
+router.post('/cancel', async (req, res) => {
   try {
-    const { sessionId } = req.params;
+    const { shop } = req.session;
 
-    const session = await stripe.checkout.sessions.retrieve(sessionId);
-
-    if (session.payment_status === 'paid') {
-      const { storeId, planType } = session.metadata;
-
-      // Create subscription record
-      await prisma.subscription.create({
-        data: {
-          storeId,
-          tier: planType,
-          status: 'ACTIVE',
-          stripeSubscriptionId: session.subscription,
+    const store = await prisma.store.findUnique({
+      where: { shopifyDomain: shop },
+      include: {
+        subscription: {
+          where: { status: 'ACTIVE' },
+          take: 1,
         },
-      });
+      },
+    });
 
-      // Update store plan type
-      await prisma.store.update({
-        where: { id: storeId },
-        data: { planType },
-      });
-
-      res.json({ success: true, subscription: session });
-    } else {
-      res.status(400).json({ error: 'Payment not completed' });
+    if (!store || !store.subscription[0]) {
+      return res.status(404).json({ error: 'No active subscription found' });
     }
+
+    const subscription = store.subscription[0];
+
+    // Cancel in Stripe
+    if (subscription.stripeSubscriptionId) {
+      await stripe.subscriptions.cancel(subscription.stripeSubscriptionId);
+    }
+
+    // Update in database
+    await prisma.subscription.update({
+      where: { id: subscription.id },
+      data: {
+        status: 'CANCELED',
+        canceledAt: new Date(),
+      },
+    });
+
+    res.json({ success: true });
   } catch (error) {
-    console.error('Verify subscription error:', error);
-    res.status(500).json({ error: 'Failed to verify subscription' });
+    console.error('Cancel subscription error:', error);
+    res.status(500).json({ error: 'Failed to cancel subscription' });
   }
 });
 
