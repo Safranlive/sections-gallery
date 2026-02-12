@@ -1,0 +1,191 @@
+{% comment %}
+  Trust Badges Section for Sections Gallery
+  Display trust badges and security icons
+{% endcomment %}
+
+<div class="trust-badges-section" data-section-id="{{ section.id }}">
+  <div class="trust-badges-container">
+    {% if section.settings.heading != blank %}
+      <h2 class="trust-badges-heading">{{ section.settings.heading }}</h2>
+    {% endif %}
+    
+    <div class="badges-grid">
+      {% for block in section.blocks %}
+        <div class="badge-item" {{ block.shopify_attributes }}>
+          {% if block.settings.icon != blank %}
+            <img src="{{ block.settings.icon | img_url: '100x100' }}" alt="{{ block.settings.title }}" class="badge-icon">
+          {% endif %}
+          {% if block.settings.title != blank %}
+            <p class="badge-title">{{ block.settings.title }}</p>
+          {% endif %}
+          {% if block.settings.description != blank %}
+            <p class="badge-description">{{ block.settings.description }}</p>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<style>
+  .trust-badges-section {
+    padding: 40px 20px;
+    background-color: {{ section.settings.background_color }};
+  }
+  
+  .trust-badges-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .trust-badges-heading {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    color: {{ section.settings.heading_color }};
+  }
+  
+  .badges-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    align-items: center;
+    justify-items: center;
+  }
+  
+  .badge-item {
+    text-align: center;
+    padding: 1.5rem;
+    transition: transform 0.3s;
+  }
+  
+  .badge-item:hover {
+    transform: translateY(-5px);
+  }
+  
+  .badge-icon {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    margin-bottom: 1rem;
+  }
+  
+  .badge-title {
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin: 0.5rem 0;
+    color: {{ section.settings.text_color }};
+  }
+  
+  .badge-description {
+    font-size: 0.9rem;
+    color: #666;
+    margin: 0;
+  }
+  
+  @media (max-width: 768px) {
+    .badges-grid {
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1.5rem;
+    }
+    
+    .badge-icon {
+      width: 60px;
+      height: 60px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Trust Badges",
+  "class": "trust-badges-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section Heading",
+      "default": "Why Shop With Us"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#f9f9f9"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#000000"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "badge",
+      "name": "Trust Badge",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Badge Icon"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Secure Payment"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Your payment information is safe with us"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Trust Badges",
+      "category": "Sections Gallery",
+      "blocks": [
+        {
+          "type": "badge",
+          "settings": {
+            "title": "Free Shipping",
+            "description": "On orders over $50"
+          }
+        },
+        {
+          "type": "badge",
+          "settings": {
+            "title": "Secure Payment",
+            "description": "SSL encrypted checkout"
+          }
+        },
+        {
+          "type": "badge",
+          "settings": {
+            "title": "Money Back Guarantee",
+            "description": "30-day return policy"
+          }
+        },
+        {
+          "type": "badge",
+          "settings": {
+            "title": "24/7 Support",
+            "description": "Always here to help"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
