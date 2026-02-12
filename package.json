@@ -1,76 +1,52 @@
 {
   "name": "sections-gallery",
-  "version": "2.0.0",
-  "description": "Premium Shopify section marketplace with Shopify Billing API integration",
-  "main": "server.js",
+  "version": "1.0.0",
+  "description": "Premium Shopify theme sections marketplace and management app",
+  "main": "backend/server.js",
   "scripts": {
-    "dev": "concurrently \"npm run server\" \"npm run client\" \"npm run admin\"",
-    "server": "nodemon server.js",
-    "client": "cd frontend && npm start",
-    "admin": "cd admin && npm start",
-    "build": "npm run build:client && npm run build:admin",
-    "build:client": "cd frontend && npm run build",
-    "build:admin": "cd admin && npm run build",
-    "start": "node server.js",
-    "migrate": "npx prisma migrate deploy",
-    "migrate:dev": "npx prisma migrate dev",
-    "generate": "npx prisma generate",
-    "seed": "node prisma/seed.js",
-    "studio": "npx prisma studio",
-    "db:reset": "npx prisma migrate reset",
-    "db:push": "npx prisma db push",
-    "postinstall": "npx prisma generate"
+    "start": "node backend/server.js",
+    "dev": "nodemon backend/server.js",
+    "dev:frontend": "cd frontend && npm start",
+    "build:frontend": "cd frontend && npm run build",
+    "db:migrate": "npx prisma migrate dev",
+    "db:seed": "npx prisma db seed",
+    "db:studio": "npx prisma studio",
+    "test": "jest",
+    "lint": "eslint ."
+  },
+  "prisma": {
+    "seed": "node prisma/seed.js"
   },
   "keywords": [
     "shopify",
     "sections",
+    "theme",
     "marketplace",
-    "saas",
-    "liquid",
-    "themes",
-    "ecommerce"
+    "liquid"
   ],
-  "author": {
-    "name": "Shafran Mohamed",
-    "email": "safranlive@gmail.com",
-    "company": "SYSTO",
-    "url": "https://www.systo.lk"
-  },
+  "author": "Sections Gallery Team",
   "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Safranlive/sections-gallery.git"
-  },
-  "bugs": {
-    "url": "https://github.com/Safranlive/sections-gallery/issues",
-    "email": "safranlive@gmail.com"
-  },
-  "engines": {
-    "node": ">=18.0.0",
-    "npm": ">=9.0.0"
-  },
   "dependencies": {
     "@prisma/client": "^5.7.0",
-    "@shopify/shopify-api": "^9.0.0",
+    "@shopify/shopify-api": "^8.1.0",
     "axios": "^1.6.2",
     "bcryptjs": "^2.4.3",
-    "body-parser": "^1.20.2",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "express-session": "^1.17.3",
     "jsonwebtoken": "^9.0.2",
-    "morgan": "^1.10.0"
+    "stripe": "^14.7.0"
   },
   "devDependencies": {
-    "@shopify/polaris": "^12.0.0",
-    "@shopify/polaris-icons": "^7.0.0",
-    "concurrently": "^8.2.2",
+    "eslint": "^8.55.0",
+    "jest": "^29.7.0",
     "nodemon": "^3.0.2",
-    "prisma": "^5.7.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-router-dom": "^6.20.1"
+    "prisma": "^5.7.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
   }
 }
