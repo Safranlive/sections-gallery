@@ -1,1 +1,91 @@
-aW1wb3J0IFJlYWN0IGZyb20gJ3JlYWN0JzsKaW1wb3J0IHsgTmF2aWdhdGlvbiB9IGZyb20gJ0BzaG9waWZ5L3BvbGFyaXMnOwppbXBvcnQgeyB1c2VOYXZpZ2F0ZSwgdXNlTG9jYXRpb24gfSBmcm9tICdyZWFjdC1yb3V0ZXItZG9tJzsKaW1wb3J0IHsKICBIb21lTWlub3IsCiAgUHJvZHVjdHNNaW5vciwKICBDYXNoRG9sbGFyTWlub3IsCiAgQW5hbHl0aWNzTWFqb3IsCiAgU2V0dGluZ3NNYWpvciwKICBDdXN0b21lcnNNaW5vciwKfSBmcm9tICdAc2hvcGlmeS9wb2xhcmlzLWljb25zJzsKCmV4cG9ydCBkZWZhdWx0IGZ1bmN0aW9uIEFwcE5hdmlnYXRpb24oKSB7CiAgY29uc3QgbmF2aWdhdGUgPSB1c2VOYXZpZ2F0ZSgpOwogIGNvbnN0IGxvY2F0aW9uID0gdXNlTG9jYXRpb24oKTsKCiAgcmV0dXJuICgKICAgIDxOYXZpZ2F0aW9uIGxvY2F0aW9uPXtsb2NhdGlvbi5wYXRobmFtZX0+CiAgICAgIDxOYXZpZ2F0aW9uLlNlY3Rpb24KICAgICAgICBpdGVtcz17WwogICAgICAgICAgewogICAgICAgICAgICB1cmw6ICcvJywKICAgICAgICAgICAgbGFiZWw6ICdEYXNoYm9hcmQnLAogICAgICAgICAgICBpY29uOiBIb21lTWlub3IsCiAgICAgICAgICAgIHNlbGVjdGVkOiBsb2NhdGlvbi5wYXRobmFtZSA9PT0gJy8nLAogICAgICAgICAgICBvbkNsaWNrOiAoZSkgPT4gewogICAgICAgICAgICAgIGUucHJldmVudERlZmF1bHQoKTsKICAgICAgICAgICAgICBuYXZpZ2F0ZSgnLycpOwogICAgICAgICAgICB9LAogICAgICAgICAgfSwKICAgICAgICAgIHsKICAgICAgICAgICAgdXJsOiAnL3NlY3Rpb25zJywKICAgICAgICAgICAgbGFiZWw6ICdTZWN0aW9ucycsCiAgICAgICAgICAgIGljb246IFByb2R1Y3RzTWlub3IsCiAgICAgICAgICAgIHNlbGVjdGVkOiBsb2NhdGlvbi5wYXRobmFtZSA9PT0gJy9zZWN0aW9ucycsCiAgICAgICAgICAgIG9uQ2xpY2s6IChlKSA9PiB7CiAgICAgICAgICAgICAgZS5wcmV2ZW50RGVmYXVsdCgpOwogICAgICAgICAgICAgIG5hdmlnYXRlKCcvc2VjdGlvbnMnKTsKICAgICAgICAgICAgfSwKICAgICAgICAgIH0sCiAgICAgICAgICB7CiAgICAgICAgICAgIHVybDogJy9wcmljaW5nJywKICAgICAgICAgICAgbGFiZWw6ICdQcmljaW5nJywKICAgICAgICAgICAgaWNvbjogQ2FzaERvbGxhck1pbm9yLAogICAgICAgICAgICBzZWxlY3RlZDogbG9jYXRpb24ucGF0aG5hbWUgPT09ICcvcHJpY2luZycsCiAgICAgICAgICAgIG9uQ2xpY2s6IChlKSA9PiB7CiAgICAgICAgICAgICAgZS5wcmV2ZW50RGVmYXVsdCgpOwogICAgICAgICAgICAgIG5hdmlnYXRlKCcvcHJpY2luZycpOwogICAgICAgICAgICB9LAogICAgICAgICAgfSwKICAgICAgICAgIHsKICAgICAgICAgICAgdXJsOiAnL2FuYWx5dGljcycsCiAgICAgICAgICAgIGxhYmVsOiAnQW5hbHl0aWNzJywKICAgICAgICAgICAgaWNvbjogQW5hbHl0aWNzTWFqb3IsCiAgICAgICAgICAgIHNlbGVjdGVkOiBsb2NhdGlvbi5wYXRobmFtZSA9PT0gJy9hbmFseXRpY3MnLAogICAgICAgICAgICBvbkNsaWNrOiAoZSkgPT4gewogICAgICAgICAgICAgIGUucHJldmVudERlZmF1bHQoKTsKICAgICAgICAgICAgICBuYXZpZ2F0ZSgnL2FuYWx5dGljcycpOwogICAgICAgICAgICB9LAogICAgICAgICAgfSwKICAgICAgICBdfQogICAgICAvPgogICAgICA8TmF2aWdhdGlvbi5TZWN0aW9uCiAgICAgICAgdGl0bGU9Ik1hbmFnZW1lbnQiCiAgICAgICAgaXRlbXM9e1sKICAgICAgICAgIHsKICAgICAgICAgICAgdXJsOiAnL2FkbWluJywKICAgICAgICAgICAgbGFiZWw6ICdBZG1pbiBQYW5lbCcsCiAgICAgICAgICAgIGljb246IEN1c3RvbWVyc01pbm9yLAogICAgICAgICAgICBzZWxlY3RlZDogbG9jYXRpb24ucGF0aG5hbWUgPT09ICcvYWRtaW4nLAogICAgICAgICAgICBvbkNsaWNrOiAoZSkgPT4gewogICAgICAgICAgICAgIGUucHJldmVudERlZmF1bHQoKTsKICAgICAgICAgICAgICBuYXZpZ2F0ZSgnL2FkbWluJyk7CiAgICAgICAgICAgIH0sCiAgICAgICAgICAgIGJhZGdlOiAnTmV3JywKICAgICAgICAgIH0sCiAgICAgICAgICB7CiAgICAgICAgICAgIHVybDogJy9zZXR0aW5ncycsCiAgICAgICAgICAgIGxhYmVsOiAnU2V0dGluZ3MnLAogICAgICAgICAgICBpY29uOiBTZXR0aW5nc01ham9yLAogICAgICAgICAgICBzZWxlY3RlZDogbG9jYXRpb24ucGF0aG5hbWUgPT09ICcvc2V0dGluZ3MnLAogICAgICAgICAgICBvbkNsaWNrOiAoZSkgPT4gewogICAgICAgICAgICAgIGUucHJldmVudERlZmF1bHQoKTsKICAgICAgICAgICAgICBuYXZpZ2F0ZSgnL3NldHRpbmdzJyk7CiAgICAgICAgICAgIH0sCiAgICAgICAgICB9LAogICAgICAgIF19CiAgICAgIC8+CiAgICA8L05hdmlnYXRpb24+CiAgKTsKfQo=
+import React from 'react';
+import { Navigation } from '@shopify/polaris';
+import { useNavigate, useLocation } from 'react-router-dom';
+import {
+  HomeMinor,
+  ProductsMinor,
+  CashDollarMinor,
+  AnalyticsMajor,
+  SettingsMajor,
+  CustomersMinor,
+} from '@shopify/polaris-icons';
+
+export default function AppNavigation() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  return (
+    <Navigation location={location.pathname}>
+      <Navigation.Section
+        items={[
+          {
+            url: '/',
+            label: 'Dashboard',
+            icon: HomeMinor,
+            selected: location.pathname === '/',
+            onClick: (e) => {
+              e.preventDefault();
+              navigate('/');
+            },
+          },
+          {
+            url: '/sections',
+            label: 'Sections',
+            icon: ProductsMinor,
+            selected: location.pathname === '/sections',
+            onClick: (e) => {
+              e.preventDefault();
+              navigate('/sections');
+            },
+          },
+          {
+            url: '/pricing',
+            label: 'Pricing',
+            icon: CashDollarMinor,
+            selected: location.pathname === '/pricing',
+            onClick: (e) => {
+              e.preventDefault();
+              navigate('/pricing');
+            },
+          },
+          {
+            url: '/analytics',
+            label: 'Analytics',
+            icon: AnalyticsMajor,
+            selected: location.pathname === '/analytics',
+            onClick: (e) => {
+              e.preventDefault();
+              navigate('/analytics');
+            },
+          },
+        ]}
+      />
+      <Navigation.Section
+        title="Management"
+        items={[
+          {
+            url: '/admin',
+            label: 'Admin Panel',
+            icon: CustomersMinor,
+            selected: location.pathname === '/admin',
+            onClick: (e) => {
+              e.preventDefault();
+              navigate('/admin');
+            },
+            badge: 'New',
+          },
+          {
+            url: '/settings',
+            label: 'Settings',
+            icon: SettingsMajor,
+            selected: location.pathname === '/settings',
+            onClick: (e) => {
+              e.preventDefault();
+              navigate('/settings');
+            },
+          },
+        ]}
+      />
+    </Navigation>
+  );
+}
