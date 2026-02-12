@@ -106,6 +106,7 @@ const validateLicense = async (req, res, next) => {
     }
 
     req.license = license;
+    req.store = license.store;
     next();
   } catch (error) {
     console.error('License validation error:', error);
