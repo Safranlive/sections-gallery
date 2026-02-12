@@ -151,24 +151,23 @@ router.post('/shop-redact', express.raw({ type: 'application/json' }), verifySho
       },
     });
 
-    // Delete all store data after 48 hours
-    // This gives time for any pending operations to complete
+    // Delete all store data
     const store = await prisma.store.findUnique({
       where: { shopifyDomain: shop },
     });
 
     if (store) {
-      // Mark for deletion
-      await prisma.store.update({
-        where: { id: store.id },
-        data: {
-          isActive: false,
-          markedForDeletion: true,
-          deletionScheduledAt: new Date(Date.now() + 48 * 60 * 60 * 1000),
-        },
-      });
+      // Delete related records
+      await prisma.analytics.deleteMany({ where: { storeId: store.id } });
+      await prisma.installedSection.deleteMany({ where: { storeId: store.id } });
+      await prisma.subscription.deleteMany({ where: { storeId: store.id } });
+      await prisma.license.deleteMany({ where: { storeId: store.id } });
+      
+      // Delete store
+      await prisma.store.delete({ where: { id: store.id } });
     }
 
+    // Mark webhook as processed
     await prisma.webhookLog.updateMany({
       where: {
         shopifyDomain: shop,
@@ -201,43 +200,43 @@ router.post('/stripe', express.raw({ type: 'application/json' }), async (req, re
       case 'checkout.session.completed':
         // Handle successful checkout
         const session = event.data.object;
-        await handleCheckoutComplete(session);
-        break;
-      
-      case 'customer.subscription.updated':
-        // Handle subscription updates
-        const subscription = event.data.object;
-        await handleSubscriptionUpdate(subscription);
-        break;
-      
-      case 'customer.subscription.deleted':
-        // Handle subscription cancellation
-        const deletedSub = event.data.object;
-        await handleSubscriptionCanceled(deletedSub);
+        const { storeId, planType } = session.metadata;
+
+        await prisma.subscription.create({
+          data: {
+            storeId,
+            tier: planType,
+            status: 'ACTIVE',
+            stripeSubscriptionId: session.subscription,
+            stripeCustomerId: session.customer,
+          },
+        });
+
+        await prisma.store.update({
+          where: { id: storeId },
+          data: { planType },
+        });
         break;
 
-      default:
-        console.log(`Unhandled Stripe event type: ${event.type}`);
+      case 'customer.subscription.updated':
+      case 'customer.subscription.deleted':
+        // Handle subscription changes
+        const subscription = event.data.object;
+        
+        await prisma.subscription.updateMany({
+          where: { stripeSubscriptionId: subscription.id },
+          data: { 
+            status: subscription.status === 'active' ? 'ACTIVE' : 'CANCELED',
+          },
+        });
+        break;
     }
 
     res.json({ received: true });
   } catch (error) {
     console.error('Stripe webhook error:', error);
-    res.status(400).send(`Webhook Error: ${error.message}`);
+    res.status(400).json({ error: 'Webhook verification failed' });
   }
 });
-
-// Helper functions
-async function handleCheckoutComplete(session) {
-  // Implementation for checkout completion
-}
-
-async function handleSubscriptionUpdate(subscription) {
-  // Implementation for subscription updates
-}
-
-async function handleSubscriptionCanceled(subscription) {
-  // Implementation for subscription cancellation
-}
 
 module.exports = router;
