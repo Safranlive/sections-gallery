@@ -1,111 +1,201 @@
+// Sections Gallery Install Section Page
+// Install purchased section to a theme
+
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Page, Layout, Card, Form, FormLayout, Select, Checkbox, Button, Banner } from '@shopify/polaris';
+import {
+  Page,
+  Layout,
+  Card,
+  Button,
+  Badge,
+  Stack,
+  Text,
+  Select,
+  Banner,
+  Toast,
+  Frame,
+  SkeletonBodyText,
+  Icon
+} from '@shopify/polaris';
+import {
+  InstallMinor,
+  CheckoutMajor,
+  CircleTickMajor
+} from '@shopify/polaris-icons';
 import api from '../services/api';
 
-export default function InstallSection() {
-  const { id } = useParams();
+function InstallSection({ shop }) {
+  const { sectionId } = useParams();
   const navigate = useNavigate();
+  
   const [section, setSection] = useState(null);
   const [themes, setThemes] = useState([]);
   const [selectedTheme, setSelectedTheme] = useState('');
-  const [autoPublish, setAutoPublish] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [installing, setInstalling] = useState(false);
-  const [error, setError] = useState(null);
+  const [installed, setInstalled] = useState(false);
+  
+  // Toast
+  const [toastActive, setToastActive] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
+  const [toastError, setToastError] = useState(false);
 
   useEffect(() => {
-    fetchData();
-  }, [id]);
+    loadData();
+  }, [sectionId]);
 
-  const fetchData = async () => {
+  const loadData = async () => {
     try {
-      const [sectionResponse, themesResponse] = await Promise.all([
-        api.get(`/sections/${id}`),
-        api.get('/shopify/themes')
-      ]);
-      setSection(sectionResponse.data);
-      setThemes(themesResponse.data.map(t => ({
-        label: t.name,
-        value: t.id.toString()
-      })));
-      if (themesResponse.data.length > 0) {
-        setSelectedTheme(themesResponse.data[0].id.toString());
+      setLoading(true);
+      
+      // Load section details
+      const sectionResponse = await api.get(`/sections/${sectionId}?shop=${shop}`);
+      setSection(sectionResponse.data.section);
+      
+      // Check if purchased
+      if (!sectionResponse.data.isPurchased) {
+        showToast('You must purchase this section first', true);
+        setTimeout(() => navigate(`/sections/${sectionId}`), 2000);
+        return;
       }
+      
+      // Load themes
+      const themesResponse = await api.get(`/themes?shop=${shop}`);
+      setThemes(themesResponse.data.themes);
+      
+      // Auto-select main theme
+      const mainTheme = themesResponse.data.themes.find(t => t.role === 'main');
+      if (mainTheme) {
+        setSelectedTheme(mainTheme.id.toString());
+      }
+      
     } catch (error) {
-      console.error('Error fetching data:', error);
-      setError('Failed to load installation data');
+      console.error('Load data error:', error);
+      showToast('Failed to load installation data', true);
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleInstall = async () => {
     if (!selectedTheme) {
-      setError('Please select a theme');
+      showToast('Please select a theme', true);
       return;
     }
 
-    setInstalling(true);
-    setError(null);
-
     try {
-      await api.post(`/sections/${id}/install`, {
-        themeId: selectedTheme,
-        autoPublish
+      setInstalling(true);
+      
+      const response = await api.post(`/sections/${sectionId}/install`, {
+        shop,
+        themeId: selectedTheme
       });
-      alert('Section installed successfully!');
-      navigate('/my-sections');
+      
+      if (response.data.success) {
+        setInstalled(true);
+        showToast('Section installed successfully!', false);
+      }
+      
     } catch (error) {
-      console.error('Error installing section:', error);
-      setError(error.response?.data?.message || 'Failed to install section');
+      console.error('Install error:', error);
+      const errorMessage = error.response?.data?.error || 'Installation failed';
+      showToast(errorMessage, true);
     } finally {
       setInstalling(false);
     }
   };
 
-  if (!section) return <Page title="Loading..." />;
+  const showToast = (message, isError = false) => {
+    setToastMessage(message);
+    setToastError(isError);
+    setToastActive(true);
+  };
+
+  if (loading) {
+    return (
+      <Page title="Install Section">
+        <Layout>
+          <Layout.Section>
+            <Card>
+              <SkeletonBodyText lines={5} />
+            </Card>
+          </Layout.Section>
+        </Layout>
+      </Page>
+    );
+  }
 
   return (
-    <Page
-      title={`Install ${section.name}`}
-      breadcrumbs={[{ content: 'Back', onAction: () => navigate(-1) }]}
-    >
-      <Layout>
-        <Layout.Section>
-          {error && (
-            <Banner status="critical" onDismiss={() => setError(null)}>
-              {error}
-            </Banner>
+    <Frame>
+      <Page
+        title="Install Section"
+        breadcrumbs={[{ content: 'Back', onAction: () => navigate(`/sections/${sectionId}`) }]}
+      >
+        <Layout>
+          {installed ? (
+            <Layout.Section>
+              <Banner status="success" title="Section Installed!">
+                <p>The section has been successfully installed to your theme.</p>
+                <ButtonGroup>
+                  <Button primary onClick={() => navigate('/my-sections')}>
+                    View My Sections
+                  </Button>
+                  <Button onClick={() => navigate('/marketplace')}>
+                    Browse More Sections
+                  </Button>
+                </ButtonGroup>
+              </Banner>
+            </Layout.Section>
+          ) : (
+            <>
+              <Layout.Section>
+                <Card title={section?.name || 'Section'}>
+                  <p>{section?.description}</p>
+                </Card>
+              </Layout.Section>
+
+              <Layout.Section>
+                <Card title="Select Theme">
+                  <Stack vertical>
+                    <Text>
+                      Choose which theme to install this section to:
+                    </Text>
+                    <Select
+                      label="Theme"
+                      options={themes.map(theme => ({
+                        label: `${theme.name} ${theme.role === 'main' ? '(Current)' : ''}`,
+                        value: theme.id.toString()
+                      }))}
+                      value={selectedTheme}
+                      onChange={setSelectedTheme}
+                    />
+                    <Button
+                      primary
+                      disabled={!selectedTheme}
+                      loading={installing}
+                      onClick={handleInstall}
+                      icon={InstallMinor}
+                    >
+                      Install Now
+                    </Button>
+                  </Stack>
+                </Card>
+              </Layout.Section>
+            </>
           )}
-          <Card sectioned>
-            <Form onSubmit={handleInstall}>
-              <FormLayout>
-                <Select
-                  label="Select Theme"
-                  options={themes}
-                  value={selectedTheme}
-                  onChange={setSelectedTheme}
-                  placeholder="Choose a theme"
-                />
-                <Checkbox
-                  label="Automatically publish changes"
-                  checked={autoPublish}
-                  onChange={setAutoPublish}
-                  helpText="The section will be immediately available on your live theme"
-                />
-                <Button primary submit loading={installing}>
-                  Install Section
-                </Button>
-              </FormLayout>
-            </Form>
-          </Card>
-        </Layout.Section>
-        <Layout.Section secondary>
-          <Card title="What happens next?" sectioned>
-            <p>1. The section will be added to your selected theme</p>
-            <p>2. You can customize it in the theme editor</p>
-            <p>3. Add it to any page using the theme customizer</p>
-          </Card>
-        </Layout.Section>
-      </Layout>
-    </Page>
+        </Layout>
+      </Page>
+
+      {toastActive && (
+        <Toast
+          content={toastMessage}
+          error={toastError}
+          onDismiss={() => setToastActive(false)}
+        />
+      )}
+    </Frame>
   );
 }
+
+export default InstallSection;
