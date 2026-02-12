@@ -129,8 +129,8 @@ router.post('/:slug/install', verifyShopifySession, async (req, res) => {
       return res.status(400).json({ error: 'Section already installed' });
     }
 
-    // Install section
-    const installed = await prisma.installedSection.create({
+    // Create installation record
+    const installation = await prisma.installedSection.create({
       data: {
         storeId: req.store.id,
         sectionId: section.id,
@@ -144,7 +144,7 @@ router.post('/:slug/install', verifyShopifySession, async (req, res) => {
       data: { downloadCount: { increment: 1 } },
     });
 
-    res.json({ success: true, installed });
+    res.json({ success: true, installation });
   } catch (error) {
     console.error('Install section error:', error);
     res.status(500).json({ error: 'Failed to install section' });
